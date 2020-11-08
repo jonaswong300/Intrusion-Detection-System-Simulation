@@ -1,0 +1,34 @@
+--------------Statistical Data--------------
+Time online
+Total: 1011.5799999999999
+Mean: 144.51
+SD: 21.15
+
+Logins
+Total: 31.0
+Mean: 4.43
+SD: 2.13
+
+Emails deleted
+Total: 52.0
+Mean: 7.43
+SD: 1.5
+
+Emails sent
+Total: 73.0
+Mean: 10.43
+SD: 4.27
+
+Emails opened
+Total: 67.0
+Mean: 9.57
+SD: 3.81
+
+--------------Daily Totals--------------
+Day 1:	170.88
+Day 2:	173.46
+Day 3:	217.39
+Day 4:	151.67000000000002
+Day 5:	151.85
+Day 6:	193.3
+Day 7:	176.03
