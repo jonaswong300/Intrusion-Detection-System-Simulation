@@ -269,7 +269,8 @@ class IDS {
                 tempMin = (int) Math.round(rand.nextGaussian() * standardDeviation + mean);
             }
 
-            fw.write(name + ": " + Math.abs(tempMin) + "\n");
+            tempMin = Math.abs(tempMin);
+            fw.write(name + ": " + tempMin + "\n");
 
             if(individualEventValue.containsKey(name)){
                 individualEventValue.get(name).add((double)tempMin);
@@ -306,7 +307,8 @@ class IDS {
                 tempMin = Math.round((rand.nextGaussian() * standardDeviation + mean) * 100.0)/ 100.0;
             }
 
-            fw.write(name + ": " + Math.abs(tempMin) + "\n");
+            tempMin = Math.abs(tempMin);
+            fw.write(name + ": " + tempMin + "\n");
 
             if(individualEventValue.containsKey(name)){
                 individualEventValue.get(name).add(tempMin);
@@ -526,7 +528,6 @@ class IDS {
             for(String s : individualEventValue.keySet()){
 
                 actualValue = Math.abs(individualEventValue.get(s).get(i));
-
                 if(liveResultsMap.containsKey(s)){
                      mean = liveResultsMap.get(s).get(1);
                      sd = liveResultsMap.get(s).get(2);
@@ -590,7 +591,7 @@ class IDS {
 
     public static void main(String[] args) {
         eventFileName = "Events.txt"; //args[0];
-        statsFileName = "Stats.txt"; //args[1];
+        statsFileName = "newStats.txt"; //args[1];
         days = 7; //args[2];
         run();
     }
