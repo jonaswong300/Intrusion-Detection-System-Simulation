@@ -1,7 +1,5 @@
 package com.company;
 
-//Version 1
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -187,41 +185,92 @@ class IDS {
         return false;
     }
 
+
+    /* Check for file inconsistency
+    1. Event’s minimum value greater than its maximum value.
+    2. Event’s weight not an integer that is greater than 0.
+    3. Discrete event’s minimum/maximum value not an integer.
+    4. Event’s mean value greater than its maximum value.
+    5. Duplicate event names in events/stats file.
+    6. The number of events monitored which is specified at the first line of the events/stats file, does not tally with the actual number of records in the file.
+     */
     private static void checkFileInconsistency(){
         System.out.println("\n----------------------------------------------------------------------");
         System.out.println("Checking for inconsistencies between the files.");
         System.out.println("----------------------------------------------------------------------");
 
-        String mismatchEvent = "";
-        boolean ok = true, mismatch = false;
+        boolean ok = true;
 
-        //Check if size of events and stats are same
-        if(eventList.size() != statList.size()){
-            System.err.println("Error. Number of events differ by " + (eventList.size() > statList.size() ?
-                               eventList.size() - statList.size() : statList.size() - eventList.size()));
-            ok = false;
-        }
+        Set<String> eventSet = new HashSet<>();
+        Set<String> statSet = new HashSet<>();
 
-        for(int i = 0; i < eventList.size(); i++){
-
-            if(eventList.get(i).getEventName().equals(statList.get(i).getEventName())){
-                mismatch = true;
+        //Check if there are duplicate events from both file
+        //Split them into individual hashsets
+        for (Event e : eventList){
+            if(!eventSet.contains(e.getEventName())){
+                eventSet.add(e.getEventName());
             }else{
-                mismatchEvent = eventList.get(i).getEventName();
+                System.out.println("Duplicate event, " + e.getEventName() + " found in " + eventFileName);
                 ok = false;
             }
-
-            //Check if mean is greater than maximum
-            if(eventList.get(i).getMaximum() < statList.get(i).getMean()){
-                System.out.println("Error. Event " +statList.get(i).getEventName() + " mean value is greater than maximum value");
+        }
+        for (Stats s : statList){
+            if(!statSet.contains(s.getEventName())){
+                statSet.add(s.getEventName());
+            }else{
+                System.out.println("Duplicate event, " + s.getEventName() + " found in " + statsFileName);
                 ok = false;
             }
         }
 
-        if(!mismatch){
-            System.out.println("Error. Inconsistent event found " + mismatchEvent);
+        //Check if event name from both set match
+        if(eventSet.removeAll(statSet)){
+            if(eventSet.size() > 0){
+                System.out.println("Inconsistent events detected: " + eventSet);
+                ok = false;
+            }
         }
 
+        //Check if number of events from both files are the same
+        if(eventList.size() != statList.size()){
+            System.out.println("Error. Number of events differ by " + (eventList.size() > statList.size() ?
+                    eventList.size() - statList.size() : statList.size() - eventList.size()));
+            ok = false;
+        }else{
+            //Check if events matches the one pass in
+            for(int i = 0; i < eventList.size(); i++){
+
+                //Check if mean is greater than maximum
+                if(eventList.get(i).getMaximum() < statList.get(i).getMean()){
+                    System.out.println("Error. Event " +statList.get(i).getEventName() + " mean value is greater than maximum value");
+                    ok = false;
+                }
+
+                //Check if Event Minimum not greater than maximum
+                //Continuous events
+                if(eventList.get(i).getMinimum() > eventList.get(i).getMaximum()){
+                    System.out.println("Error. Continuous Event " + eventList.get(i).getEventName() + " minimum value is greater than maximum value");
+                    ok = false;
+                }
+
+                //Check if Event Minimum not greater than maximum
+                //Discrete events
+                if(eventList.get(i).getMin() > eventList.get(i).getMax()){
+                    System.out.println("Error. Discrete Event " + eventList.get(i).getEventName() + " minimum value is greater than maximum value");
+                    ok = false;
+                }
+
+                //If event weight is not greater than 0
+                if(eventList.get(i).getWeight() <= 0){
+                    System.out.println("Error. Event " + eventList.get(i).getEventName() + " weight is less than or equal to 0");
+                    ok = false;
+                }
+            }
+        }
+
+
+        // If no errors are detected, validation is successful
+        // Else exit the system
         if(ok){
             System.out.println("Data successfully validated!");
         }else{
@@ -258,6 +307,9 @@ class IDS {
         Random rand = new Random();
         int tempMin = 0;
         try{
+            //Generate anomaly only if rand is 1.
+            //33% chance of being a anomaly.
+            //66% chance of being normal
             if(isAlertPhase){
                 if(rand.nextInt(3) == 1){
                     tempMin = (int) Math.round(rand.nextGaussian() * standardDeviation + mean) * serverSecret * 3;
@@ -479,26 +531,28 @@ class IDS {
         String newStatsFileName;
         Scanner input = new Scanner(System.in);
 
+
+        System.out.println("\nPlease enter new statistics filename (or q to quit): ");
+        newStatsFileName = input.nextLine();
+
+        if(newStatsFileName.equals("Q") || newStatsFileName.equals("q")){
+            System.out.println("System exiting now.");
+            System.exit(0);
+        }
+
+        if(readStatsFile(newStatsFileName, newStatsList)){
+            System.out.println("Error. Detected errors and inconsistencies in the file.");
+            System.exit(0);
+        }
+        checkFileInconsistency();
+
+        for(Stats s : newStatsList){
+            System.out.println(s);
+        }
+
+
         do{
-            System.out.println("\nPlease enter new statistics filename (or q to quit): ");
-
-            newStatsFileName = input.nextLine();
-
-
-            if(readStatsFile(newStatsFileName, newStatsList)){
-                System.out.println("Error. Detected errors and inconsistencies in the file.");
-                System.exit(0);
-            }
-            checkFileInconsistency();
-
-            for(Stats s : newStatsList){
-                System.out.println(s);
-            }
-
-        }while(newStatsFileName.equals("Q") || newStatsFileName.equals("q"));
-
-        do{
-            System.out.println("\nPlease enter number of days");
+            System.out.println("\nPlease enter number of days: ");
             days = input.nextInt();
         }while (days <= 0);
 
@@ -518,7 +572,6 @@ class IDS {
 
         //Anomaly
         //(Mean - value)/SD * weight
-
         //AnomalyCounter holds the sum of all for the day
         //anomalyCounter += anomaly
 
@@ -590,9 +643,13 @@ class IDS {
     }
 
     public static void main(String[] args) {
-        eventFileName = "Events.txt"; //args[0];
-        statsFileName = "newStats.txt"; //args[1];
-        days = 7; //args[2];
+        //args[0] = "Events.txt";
+        //args[1] = "Stats.txt";
+        //args[2] = "7";
+
+        eventFileName = "Events.txt";//args[0];
+        statsFileName = "Stats.txt";//args[1];
+        days = 7;
         run();
     }
 
