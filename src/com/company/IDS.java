@@ -671,9 +671,9 @@ class IDS {
         //args[1] = "Stats.txt";
         //args[2] = "7";
 
-        eventFileName = "Events.txt";//args[0];
-        statsFileName = "Stats.txt";//args[1];
-        days = 7;
+        eventFileName = args[0];
+        statsFileName = args[1];
+        days = Integer.parseInt(args[2]);
         run();
     }
 
