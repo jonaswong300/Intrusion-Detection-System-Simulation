@@ -1,17 +1,17 @@
-This program is in Java, Intellij platform.
-Must be tested on Windows Command Prompt.
+This program is done in Java, coded and tested on Intellij platform.
+
+Must be tested on Windows environment with Command Prompt.
 
 Classes required to compile:
 1. Event.java
 2. Stats.java
 3. IDS.java
-4. Main.java
 
 Change command directory so that the command line will run from the folder where all the files are located.
 Please ensure all the .txt files are in the same folder as the .java files.
 
 Command to compile program:
-javac Event.java Stats.java IDS.java Main.java
+javac Event.java Stats.java IDS.java
 
 
 Command to run program:
@@ -31,3 +31,5 @@ Note:
 1. replace [number of days] with a positive integer
 2. Events.txt can be replaced by the name of the file that contains event data
 3. Stats.txt can be replaced by the name of the file that contains stats data
+
+** When entering a new statistics filename, do not leave blank. No error detection mechanisms in place to test.**

@@ -1,3 +1,4 @@
+//package com.company;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
@@ -552,11 +553,12 @@ class IDS {
     }
 
     private static void prompt(){
-        String newStatsFileName;
+        String newStatsFileName = null;
         Scanner input = new Scanner(System.in);
 
 
         System.out.println("\nPlease enter new statistics filename (or q to quit): ");
+
         newStatsFileName = input.nextLine();
 
         if(newStatsFileName.equals("Q") || newStatsFileName.equals("q")){
@@ -564,16 +566,17 @@ class IDS {
             System.exit(0);
         }
 
+
         if(readStatsFile(newStatsFileName, newStatsList)){
             System.out.println("Error. Detected errors and inconsistencies in the file.");
             System.exit(0);
         }
         checkFileInconsistency();
 
+        System.out.println();
         for(Stats s : newStatsList){
             System.out.println(s);
         }
-
 
         do{
             System.out.println("\nPlease enter number of days: ");
@@ -645,7 +648,6 @@ class IDS {
     public static void run(){
         baseLineResultsMap = new HashMap<>();
         liveResultsMap = new HashMap<>();
-        days = 7;
         readCheckDisplayFiles();
         activitySimulationEngine(false, statList);
         analysisEngine(baseLineResultsMap);
@@ -668,9 +670,6 @@ class IDS {
     }
 
     public static void main(String[] args) {
-        //args[0] = "Events.txt";
-        //args[1] = "Stats.txt";
-        //args[2] = "7";
 
         eventFileName = args[0];
         statsFileName = args[1];
