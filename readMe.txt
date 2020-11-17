@@ -1,10 +1,3 @@
-This assignment was done by:
-1. Jonas Wong Zhi Shuen  6276702
-2. Joel Ong Zhen         6276696
-3. Yap Junjie Brandon    6278899
-4. Winnifred Wang        6278863
-
-
 This program is in Java, Intellij platform.
 Must be tested on Windows Command Prompt.
 
@@ -18,7 +11,7 @@ Change command directory so that the command line will run from the folder where
 Please ensure all the .txt files are in the same folder as the .java files.
 
 Command to compile program:
-javac Events.java Stats.java IDS.java Main.java
+javac Event.java Stats.java IDS.java Main.java
 
 
 Command to run program:

@@ -337,7 +337,7 @@ class IDS {
             if(isAlertPhase){
                 if(rand.nextInt(3) == 1){
                     tempMin = (int) Math.round(rand.nextGaussian() * standardDeviation + mean) * serverSecret * 3;
-                    System.out.println("d anomaly created");
+                    //System.out.println("d anomaly created");
                 }else{
                     tempMin = (int) Math.round(rand.nextGaussian() * standardDeviation + mean);
                 }
@@ -375,7 +375,7 @@ class IDS {
             if(isAlertPhase){
                 if(rand.nextInt(3) == 1){
                     tempMin = (Math.round((rand.nextGaussian() * standardDeviation + mean) * 100.0)/ 100.0) * serverSecret*3;
-                    System.out.println("C anomaly created");
+                    //System.out.println("C anomaly created");
                 }else{
                     tempMin = Math.round((rand.nextGaussian() * standardDeviation + mean) * 100.0)/ 100.0;
                 }
@@ -664,6 +664,7 @@ class IDS {
         //System.out.println(s + "\t" + liveResultsMap.get(s));
 
         alertEngine();
+        prompt();
     }
 
     public static void main(String[] args) {
@@ -671,9 +672,9 @@ class IDS {
         //args[1] = "Stats.txt";
         //args[2] = "7";
 
-        eventFileName = "Events.txt";//args[0];
-        statsFileName = "Stats.txt";//args[1];
-        days = 7;
+        //eventFileName = "Events.txt";//args[0];
+        //statsFileName = "Stats.txt";//args[1];
+        //days = 7;
         run();
     }
 
