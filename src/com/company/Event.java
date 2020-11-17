@@ -1,5 +1,3 @@
-package com.company;
-
 class Event {
 
     private String eventName;

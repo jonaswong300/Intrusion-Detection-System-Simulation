@@ -1,4 +1,3 @@
-package com.company;
 
 class Stats {
     private String eventName;

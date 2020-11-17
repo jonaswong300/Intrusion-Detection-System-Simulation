@@ -1,7 +1,6 @@
-package com.company;
-
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.time.LocalDate;
@@ -237,6 +236,31 @@ class IDS {
                     eventList.size() - statList.size() : statList.size() - eventList.size()));
             ok = false;
         }else{
+            //check first line match with size
+            try
+            {
+                FileReader fr = new FileReader(eventFileName);
+                FileReader fr_2 = new FileReader(statsFileName);
+                Scanner in = new Scanner(fr);
+                Scanner in_2 = new Scanner(fr_2);
+                int size = Integer.parseInt(in.nextLine());
+                int size_2 = Integer.parseInt(in_2.nextLine());
+                if(size != eventList.size() || size_2 != statList.size())
+                {
+                    System.out.println("Number of events specified in the file does not tally with the actual number of events in the file");
+                    ok = false;
+                }
+                fr.close();
+                fr_2.close();
+                in.close();
+                in_2.close();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+            
+
             //Check if events matches the one pass in
             for(int i = 0; i < eventList.size(); i++){
 

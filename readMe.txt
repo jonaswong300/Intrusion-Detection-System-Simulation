@@ -14,18 +14,21 @@ Classes required to compile:
 3. IDS.java
 4. Main.java
 
+Change command directory so that the command line will run from the folder where all the files are located.
+Please ensure all the .txt files are in the same folder as the .java files.
+
 Command to compile program:
-javac Event.java Stats.java IDS.java Main.java
+javac Events.java Stats.java IDS.java Main.java
 
 
 Command to run program:
-java Main Events.txt Stats.txt [number of days]
+java IDS Events.txt Stats.txt [number of days]
 
 
 Inconsistencies track:
 1. Event’s minimum value greater than its maximum value.
 2. Event’s weight not an integer that is greater than 0.
-3. Discrete event’s minimum/maximum value not an integer.
+3. Check if discrete event’s minimum/maximum value is a double.
 4. Event’s mean value greater than its maximum value.
 5. Duplicate event names in events/stats file.
 6. The number of events monitored which is specified at the first line of the events/stats file, does not tally with the actual number of records in the file.
